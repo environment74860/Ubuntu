@@ -1,0 +1,37 @@
+---
+# autoinstall
+version: 1
+
+locale: en_US
+keyboard:
+  layout: us
+
+identity:
+  hostname: ubuntu-desktop
+  username: sccm
+  password: >-
+    $6$w/pNVVwrym7r5iMe$/S/StGWGAHfh/cWSCw1q4rNskFfof9npZlPIXSrKG0Awb3
+    ppCyVtKcKrA9Vli8hDJEAbho9NDSHqPiEE7krTt0
+
+storage:
+  layout:
+    name: direct
+
+apt:
+  primary:
+    - arches: [amd64]
+      uri: "http://archive.ubuntu.com/ubuntu"
+
+packages:
+  - ubuntu-desktop
+  - ubuntu-desktop-minimal
+  - dpkg
+  - curl
+  - gpg
+  - openssh-server
+  - python3
+
+late-commands:
+  - echo 'sccm ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/sccm
+  - chmod 440 /target/etc/sudoers.d/sccm
+  - curtin in-target --target=/target -- systemctl enable ssh
