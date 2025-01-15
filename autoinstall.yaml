@@ -6,8 +6,24 @@ autoinstall:
     layout: us
   
   identity:
+    hostname: ubuntu-desktop
     username: sccm
-    password: $6$w/pNVVwrym7r5iMe$/S/StGWGAHfh/cWSCw1q4rNskFfof9npZlPIXSrKG0Awb3ppCyVtKcKrA9Vli8hDJEAbho9NDSHqPiEE7krTt0 
+    password: $6$w/pNVVwrym7r5iMe$/S/StGWGAHfh/cWSCw1q4rNskFfof9npZlPIXSrKG0Awb3ppCyVtKcKrA9Vli8hDJEAbho9NDSHqPiEE7krTt0
+  
+  storage:
+    layout:
+      name: direct
+
+  source:
+    id: ubuntu-desktop
+    search_drivers: false
+
+  refresh-installer:
+    update: yes
+    channel: stable
+
+  interactive-sections:
+    - storage
 
   ssh:
     install-server: true
@@ -22,3 +38,4 @@ autoinstall:
 
   late-commands:
     - echo 'sccm ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/sccm
+    - chmod 440 /target/etc/sudoers.d/sccm
