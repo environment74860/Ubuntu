@@ -1,41 +1,34 @@
-#cloud-config
-autoinstall:
-  version: 1
-  locale: en_US
-  keyboard:
-    layout: us
-  
-  identity:
-    hostname: ubuntu-desktop
-    username: sccm
-    password: $6$w/pNVVwrym7r5iMe$/S/StGWGAHfh/cWSCw1q4rNskFfof9npZlPIXSrKG0Awb3ppCyVtKcKrA9Vli8hDJEAbho9NDSHqPiEE7krTt0
-  
-  storage:
-    layout:
-      name: direct
+#autoinstall
+version: 1
 
-  source:
-    id: ubuntu-desktop
-    search_drivers: false
+locale: en_US
+keyboard:
+  layout: us
 
-  refresh-installer:
-    update: yes
-    channel: stable
+identity:
+  hostname: ubuntu-desktop
+  username: sccm
+  password: $6$w/pNVVwrym7r5iMe$/S/StGWGAHfh/cWSCw1q4rNskFfof9npZlPIXSrKG0Awb3ppCyVtKcKrA9Vli8hDJEAbho9NDSHqPiEE7krTt0
 
-  interactive-sections:
-    - storage
+storage:
+  layout:
+    name: direct
 
-  ssh:
-    install-server: true
-    allow-pw: true
+apt:
+  primary:
+    - arches: [amd64]
+      uri: "http://archive.ubuntu.com/ubuntu"
 
-  packages:
-    - dpkg
-    - curl
-    - gpg
-    - openssh-server
-    - python3
+packages:
+  - ubuntu-desktop
+  - ubuntu-desktop-minimal
+  - dpkg
+  - curl
+  - gpg
+  - openssh-server
+  - python3
 
-  late-commands:
-    - echo 'sccm ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/sccm
-    - chmod 440 /target/etc/sudoers.d/sccm
+late-commands:
+  - echo 'sccm ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/sccm
+  - chmod 440 /target/etc/sudoers.d/sccm
+  - curtin in-target --target=/target -- systemctl enable ssh
